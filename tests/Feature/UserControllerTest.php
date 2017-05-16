@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\User;
+use Faker\Factory;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -9,6 +11,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserControllerTest extends TestCase
 {
+    use DatabaseMigrations;
+
     /**
      * A basic test example.
      *
@@ -17,10 +21,29 @@ class UserControllerTest extends TestCase
     public function testUsersAreCreatedOk()
     {
         //Prepare
-        //Execute
-        //Assert
-        $response = $this->post('api/v1/user');
+        $faker = Factory::create();
+        $user = [
+            'name' => $name = $faker->name,
+            'email' => $email = $faker->unique()->safeEmail,
+            'password' => $password = bcrypt('secret')
 
-        $response->assertStatus(200);
+        ];
+
+        //Execute
+        $authorizedUser = factory(User::class)->create();
+        $response = $this->ActingAs($authorizedUser)->json('POST', 'api/v1/user', $user);
+
+        //Assert
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'created' => true,
+            ]);
+
+        $this->assertDatabaseHas('users', [
+            'name'=> $name,
+            'email' => $email,
+            'password' => $password
+        ]);
     }
 }
