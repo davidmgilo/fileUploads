@@ -25,7 +25,8 @@ class UserControllerTest extends TestCase
         $user = [
             'name' => $name = $faker->name,
             'email' => $email = $faker->unique()->safeEmail,
-            'password' => $password = bcrypt('secret')
+            'password' => $password = bcrypt('secret'),
+            'file' => 'guapo.png'
 
         ];
 
@@ -43,7 +44,8 @@ class UserControllerTest extends TestCase
         $this->assertDatabaseHas('users', [
             'name'=> $name,
             'email' => $email,
-            'password' => $password
+            'password' => $password,
+            'file' => 'guapo.png'
         ]);
     }
 }
