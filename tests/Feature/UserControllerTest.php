@@ -31,7 +31,7 @@ class UserControllerTest extends TestCase
 
         //Execute
         $authorizedUser = factory(User::class)->create();
-        $response = $this->ActingAs($authorizedUser)->json('POST', 'api/v1/user', $user);
+        $response = $this->ActingAs($authorizedUser,'api')->json('POST', 'api/v1/user', $user);
 
         //Assert
         $response
