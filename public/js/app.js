@@ -25276,12 +25276,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         submit: function submit() {
             console.log('Submitting');
-            window.axios.post('api/v1/user', {
-                name: this.name,
-                email: this.email,
-                password: this.password,
-                file: this.file
-            }).then(function (response) {
+            var data = new FormData();
+            data.append('name', this.name);
+            data.append('email', this.email);
+            data.append('password', this.password);
+            data.append('file', document.getElementById('file').files[0]);
+            window.axios.post('/api/v1/user', data).then(function (response) {
                 console.log(response);
             }).catch(function (error) {
                 console.log(error);
@@ -43946,6 +43946,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "create-users-form"
     }
   }, [_c('form', {
+    attrs: {
+      "accept-charset": "UTF-8",
+      "enctype": "multipart/form-data"
+    },
     on: {
       "submit": function($event) {
         $event.preventDefault();
@@ -44058,7 +44062,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "file",
       "name": "file",
       "id": "file",
-      "placeholder": "File"
+      "placeholder": "File",
+      "value": ""
     }
   })])
 }]}

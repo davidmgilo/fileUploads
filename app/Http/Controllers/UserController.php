@@ -40,7 +40,7 @@ class UserController extends Controller
 
         $file = $request->file('file');
 
-//        dump($file);
+//        dd($file);
 
         $name = $file->getClientOriginalName();
 //        dump($name);
@@ -50,7 +50,7 @@ class UserController extends Controller
         $databaseUser = [
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => $request->input('password'),
+            'password' => bcrypt($request->input('password')),
             'file' => $name,
         ];
 
